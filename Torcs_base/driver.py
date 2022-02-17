@@ -49,7 +49,7 @@ class Driver(object):
         self.prev_rpm = None
         #self.table=Qtable.maketable()
         #after first iteration
-        self.table=pandas.read_csv("C:/Users/henry/Desktop/Torcs_q/Qtable.csv")
+        self.table=pandas.read_csv("./Qtable.csv")
         
         self.Accelerate=0
         self.Gearshift=0
