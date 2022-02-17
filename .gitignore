@@ -129,4 +129,3 @@ dmypy.json
 .pyre/
 
 # ignore qtable and episode files
-episode.txt
