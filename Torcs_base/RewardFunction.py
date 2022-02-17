@@ -18,7 +18,10 @@ def ComputeReward(speed,trackpos,angle,dist):
         OOT=1   
     elif numpy.abs(trackpos)>=0.75:
         SOOT=1    
-        
+
+    if(dist == None):
+        dist = 0
+
     if (numpy.abs(angle) >= 45 and speed<10) or (speed<3 and dist>20):
         x=count()
        # print("Restart in" +str(25-x))

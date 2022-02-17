@@ -110,23 +110,23 @@ while not shutdownClient:
             #print(d.table) #Prints the Qtable
 
             #Creates Xcel File filled with Qtable
-            d.table.to_csv(path_or_buf="C:/Users/henry/Desktop/Torcs_base/Qtable.csv",index=False)
+            d.table.to_csv(path_or_buf="./Qtable.csv",index=False)
             
             break
         
         if buf != None and buf.find('***restart***') >= 0:
             d.onRestart()
             print ('Client Restart')
-            d.table.to_csv(path_or_buf="C:/Users/henry/Desktop/Torcs_base/Qtable.csv",index=False)
-            f=open("C:/Users/henry/Desktop/Torcs_base/episode.txt","r")
+            d.table.to_csv(path_or_buf="./Qtable.csv",index=False)
+            f=open("./episode.txt","r")
             x=int(f.read())+1
             f.close()
-            f=open("C:/Users/henry/Desktop/Torcs_base/episode.txt","w")
+            f=open("./episode.txt","w")
             f.write(str(x))
             f.close()
             print("Episod number = "+str(x))
-            #execfile('C:/Users/henry/Desktop/Torcs_base/pyclient.py')  #Do After first iteration
-            exec(open("C:/Users/henry/Desktop/Torcs_base/pyclient.py").read())
+            #execfile('./pyclient.py')  #Do After first iteration
+            exec(open("./pyclient.py").read())
             break
         
         currentStep += 1
