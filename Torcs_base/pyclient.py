@@ -62,9 +62,11 @@ curEpisode = 0
 
 verbose = False
 
-d = driver.Driver(arguments.stage)
+#d = driver.Driver(arguments.stage)
 
 while not shutdownClient:
+    d = driver.Driver(arguments.stage)
+
     while True:
         print ('Sending id to server: ', arguments.id)
         buf = arguments.id + d.init()
@@ -126,11 +128,12 @@ while not shutdownClient:
             f.close()
             print("Episod number = "+str(x))
             #execfile('./pyclient.py')  #Do After first iteration
-            exec(open("./pyclient.py").read())
+            #exec(open("./pyclient.py").read())
             break
         
         currentStep += 1
         if currentStep != arguments.max_steps:
+            #print("currentStep = ",currentStep)
             if buf != None:
                 buf = d.drive(buf)
         else:
@@ -147,7 +150,7 @@ while not shutdownClient:
                 sys.exit(-1)
     
     curEpisode += 1
-    
+    print ("---------------------curEpisode-------------:", curEpisode)
     if curEpisode == arguments.max_episodes:
         shutdownClient = True
         
