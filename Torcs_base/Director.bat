@@ -1,7 +1,8 @@
 @echo off
-set ep_num=10
+set ep_num=677
+set race_config_name=quickrace_CG1_1Lap.xml
 set director_path=%~dp0
-set race_config=%director_path%quickrace_custom.xml
+set race_config=%director_path%%race_config_name%
 
 ::SET PATH TO TORCS INSTALLATION DIRECTORY AS ARGUMENT
 :: example Director.bat "c:\Program Files (x86)\torcs"
@@ -28,7 +29,7 @@ start "ai_client" py pyclient.py --maxEpisodes=%ep_num%
 ::start /wait "torcs_sim" /d %sim_path% call "%director_path%Torcs_Sim.bat" "%race_config%" %ep_num%
 
 cd %sim_path%
-call "%director_path%Torcs_Sim.bat" "%race_config%" %ep_num% "%director_path%"
+call "%director_path%Torcs_Sim.bat" "%race_config%" %ep_num% "%director_path%" "%race_config_name%"
 cd /d %director_path%
 
 ::taskkill /FI "WINDOWTITLE eq torcs_sim"
