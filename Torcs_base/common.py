@@ -1,4 +1,4 @@
-# import pandas as pd
+import pandas as pd
 import random
 
 #this function passes in a Qtable dataframe and the mutation rate.
@@ -27,17 +27,19 @@ def mutateValue(value):
     value += random.uniform(-0.01,0.01)
     return value
 
-# def append():
-#slice
+def crossover(table1, table2):
+    #append and slice
+    pass
+
 
 #eg: tableToCsv(table,"Qtable1")
 def tableToCsv(qtable, name):
     qtable.to_csv(path_or_buf= name+".csv",index=False)
     pass
 
-# if __name__ == '__main__':
+if __name__ == '__main__':
 
-#     t = pd.read_csv("./Qtable.csv")
-#     mutate(t, 0.05)
-#     tableToCsv(t,"Qtable1")
-#     pass
+    t = pd.read_csv("./Qtable.csv")
+    mutate(t, 0.05)
+    tableToCsv(t,"Qtable1")
+    pass
