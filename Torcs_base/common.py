@@ -4,23 +4,30 @@ import random
 
 #this function passes in a Qtable dataframe and the mutation rate.
 #mutation rate will be the chances of a cell being mutated.
-#eg: mutate(t, 0.05)
-def mutate(qtable, mutation_rate):
+#mutation percentage adjust the ratio of the value being choose within random generator
+#eg: mutate(t, 0.05, 0.1)
+def mutate(qtable, mutation_rate, mutation_percentage):
     #assuming we have a dataframe passed in
     for state in range(0, len(qtable)): #each state
         #each action value from the 15 action indexes for each state
         j = 1
         for actionValue in qtable.iloc[state,1:]:
             if random.random() < mutation_rate:
-                actionValue = mutateValue(actionValue)
+                actionValue = mutateValue(actionValue, mutation_percentage)
             qtable.iloc[state,j] = actionValue
             #print(actionValue)
             j+=1
     #print(qtable)
     pass
 
-def mutateValue(value):
-    value += random.uniform(-0.01,0.01)
+#percentage adjust the ratio of the value being choose within random generator
+#if a cell does not have a value, then add a small value in
+def mutateValue(value, percentage):
+    mutateRange = value * percentage
+    if value != 0:
+        value += random.uniform(-mutateRange,mutateRange)
+    else:
+        value += random.uniform(-0.01,0.01)
     return value
 
 #cut the tables around a half.
@@ -37,7 +44,6 @@ def crossover(table1, table2):
     table2 = table2first.join(table1second)
     return table1, table2
 
-
 #eg: tableToCsv(table,"Qtable1")
 def tableToCsv(qtable, name):
     qtable.to_csv(path_or_buf= name+".csv",index=False)
@@ -47,9 +53,9 @@ def tableToCsv(qtable, name):
 
 #     t1 = pd.read_csv("./Qtable.csv")
 #     t2 = pd.read_csv("./Qtable1.csv")
-#     #mutate(t1, 0.05)
-#     #t1, t2 = crossover(t1, t2)
-#     #print(t1)
+#     mutate(t1, 0.05)
+#     t1, t2 = crossover(t1, t2)
+#     print(t1)
 #     #print(t2)
 #     #tableToCsv(t1,"crossedQtable")
 #     #tableToCsv(t2,"crossedQtable2")
