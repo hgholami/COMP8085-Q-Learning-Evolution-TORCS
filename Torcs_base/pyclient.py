@@ -106,8 +106,8 @@ while not shutdownClient:
             print ('Received: ', buf)
         
         if buf != None and buf.find('***shutdown***') >= 0:
-            d.onShutDown()
-            shutdownClient = True
+            #d.onShutDown()
+            #shutdownClient = True
             print ('Client Shutdown')
             #print(d.table) #Prints the Qtable
 
