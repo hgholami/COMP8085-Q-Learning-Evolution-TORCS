@@ -12,17 +12,12 @@ def mutate(qtable, mutation_rate):
         j = 1
         for actionValue in qtable.iloc[state,1:]:
             if random.random() < mutation_rate:
-                actionValue = flipValue(actionValue)
-            if random.random() < mutation_rate:
                 actionValue = mutateValue(actionValue)
             qtable.iloc[state,j] = actionValue
             #print(actionValue)
             j+=1
     #print(qtable)
     pass
-
-def flipValue(value):
-    return -value
 
 def mutateValue(value):
     value += random.uniform(-0.01,0.01)
