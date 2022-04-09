@@ -34,21 +34,21 @@ def mutateValue(value):
 #cut the tables around a half.
 #join the table1's first half with table2's second half
 #and the other way around with table2
-def crossover(table1, table2):
+def crossover(table1, table2, percentage):
     #append and slice
-    crossover_point = int(table1.shape[1]/2)
+    crossover_point = int(table1.shape[1] * percentage) # eg: 16 * 0.2
     table1first = table1.iloc[:,:crossover_point]
     table1second = table1.iloc[:,crossover_point:]
     table2first = table2.iloc[:,:crossover_point]
     table2second = table2.iloc[:,crossover_point:]
-    table1 = table1first.join(table2second)
-    table2 = table2first.join(table1second)
-    return table1, table2
+    offspring1 = table1first.join(table2second)
+    offspring2 = table2first.join(table1second)
+    return offspring1, offspring2
 
 
 def selection(driver, numElites):
     if not os.path.isfile('elites.pkl'):
-        #create empty lis
+        #create empty list
         top = list()
     else:
         #Unpacking pickle
@@ -79,16 +79,41 @@ def tableToCsv(qtable, name):
     qtable.to_csv(path_or_buf= name+".csv",index=False)
     pass
 
-# if __name__ == '__main__':
+def evolution():
+    
+    pass
 
-#     t1 = pd.read_csv("./Qtable.csv")
-#     t2 = pd.read_csv("./Qtable1.csv")
-#     #mutate(t1, 0.05)
-#     #t1, t2 = crossover(t1, t2)
-#     #print(t1)
-#     #print(t2)
-#     #tableToCsv(t1,"crossedQtable")
-#     #tableToCsv(t2,"crossedQtable2")
-#     #tableToCsv(t,"Qtable1")
-#     #print(t.shape[0,:])
-#     pass
+if __name__ == '__main__':
+
+    # t1 = pd.read_csv("./Qtable.csv")
+    # t2 = pd.read_csv("./Qtable1.csv")
+    #mutate(t1, 0.05)
+    #t1, t2 = crossover(t1, t2)
+    #print(t1)
+    #print(t2)
+    #tableToCsv(t1,"crossedQtable")
+    #tableToCsv(t2,"crossedQtable2")
+    #tableToCsv(t,"Qtable1")
+    #print(t.shape[0,:])
+
+    with open("elites.pkl", "rb") as handle:
+        top = pickle.load(handle)
+
+    children = list()
+
+    if len(top) % 2 == 0: #even length
+        for i in range(0, len(top) - 1, 2):
+            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+            children.append(o1, o2) #maybe work
+    else: #odd length
+        for i in range(0, len(top) - 2, 2):
+            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+            children.append(o1, o2) #maybe work
+
+        o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
+        children.append(o2) #maybe work
+
+    for i in range(0, len(children) - 1):
+        children[i] = mutate(children[i], 0.01) #mutation rate will be an argument 
+        tableToCsv(children[i], "Qtable" + (i+1)) #relative path will be added soon
+    pass
