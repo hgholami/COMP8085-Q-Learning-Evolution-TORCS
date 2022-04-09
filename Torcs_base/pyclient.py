@@ -13,6 +13,7 @@ import socket
 import driver
 import carState
 import GetState2
+import common
 
 
 
@@ -36,6 +37,12 @@ parser.add_argument('--track', action='store', dest='track', default=None,
                     help='Name of the track')
 parser.add_argument('--stage', action='store', dest='stage', type=int, default=3,
                     help='Stage (0 - Warm-Up, 1 - Qualifying, 2 - Race, 3 - Unknown)')
+parser.add_argument('--individual', action='store', dest='individual', type=str, default=None,
+                    help='individual of each qtable')
+parser.add_argument('--episodes', action='store', dest='episode', type=bool, default=False,
+                    help='If it is running episodes or not')
+parser.add_argument('--numElites', action='store', dest='numElites', type=int, default=25,
+                    help='Give the number of elites we want')
 
 arguments = parser.parse_args()
 
@@ -63,9 +70,9 @@ curEpisode = 0
 verbose = False
 
 #d = driver.Driver(arguments.stage)
+d = driver.Driver(arguments.stage, arguments.individual)
 
 while not shutdownClient:
-    d = driver.Driver(arguments.stage)
 
     while True:
         print ('Sending id to server: ', arguments.id)
@@ -112,14 +119,14 @@ while not shutdownClient:
             #print(d.table) #Prints the Qtable
 
             #Creates Xcel File filled with Qtable
-            d.table.to_csv(path_or_buf="./Qtable.csv",index=False)
+            #d.table.to_csv(path_or_buf="./tempQtable.csv",index=False)
             
             break
         
         if buf != None and buf.find('***restart***') >= 0:
             d.onRestart()
             print ('Client Restart')
-            d.table.to_csv(path_or_buf="./Qtable.csv",index=False)
+            #d.table.to_csv(path_or_buf="./tempQtable.csv",index=False)
             f=open("./episode.txt","r")
             x=int(f.read())+1
             f.close()
@@ -152,6 +159,7 @@ while not shutdownClient:
     curEpisode += 1
     print ("---------------------curEpisode-------------:", curEpisode)
     if curEpisode == arguments.max_episodes:
+        common.selection(d, arguments.numElites)
         shutdownClient = True
         
 

@@ -1,6 +1,9 @@
+import heapq
 from numpy import append, int32
 import pandas as pd
 import random
+import pickle
+import os
 
 #this function passes in a Qtable dataframe and the mutation rate.
 #mutation rate will be the chances of a cell being mutated.
@@ -42,6 +45,34 @@ def crossover(table1, table2):
     table2 = table2first.join(table1second)
     return table1, table2
 
+
+def selection(driver, numElites):
+    if not os.path.isfile('elites.pkl'):
+        #create empty lis
+        top = list()
+    else:
+        #Unpacking pickle
+        with open("elites.pkl", "rb") as handle:
+            top = pickle.load(handle)
+
+    if(len(top) >= numElites): #if list is more than specified number of elites
+        if top[0][0] < driver.state.getDistFromStart():
+            #current run is better than the lowest in the top, replace it
+            heapq.heappop(top)
+            # heapq.heappush([driver.state.getDistFromStart, driver.table])
+            heapq.heappush(top,(driver.state.distFromStart, driver.table))
+
+            #Save in pickle
+            with open("elites.pkl", "wb") as handle:
+                pickle.dump(top, handle)
+        #current run is worse than lowest in the list
+    else:
+        heapq.heappush(top,(driver.state.distFromStart, driver.table))
+        
+        #Save in pickle
+        with open("elites.pkl", "wb") as handle:
+            pickle.dump(top, handle)
+    pass
 
 #eg: tableToCsv(table,"Qtable1")
 def tableToCsv(qtable, name):

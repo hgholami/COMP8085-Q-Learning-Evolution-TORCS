@@ -30,7 +30,7 @@ class Driver(object):
     '''
    
 
-    def __init__(self, stage):
+    def __init__(self, stage, path):
         '''Constructor'''
         self.WARM_UP = 0
         self.QUALIFYING = 1
@@ -49,7 +49,12 @@ class Driver(object):
         self.prev_rpm = None
         #self.table=Qtable.maketable()
         #after first iteration
-        self.table=pandas.read_csv("./Qtable.csv")
+
+        #Now if the argument is not present, read the default table, else use a table in the folder
+        if path is None:
+            self.table=pandas.read_csv("./Qtable.csv")
+        else: 
+            self.table=pandas.read_csv(path)
         
         self.Accelerate=0
         self.Gearshift=0
