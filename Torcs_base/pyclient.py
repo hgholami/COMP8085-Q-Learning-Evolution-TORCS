@@ -39,8 +39,8 @@ parser.add_argument('--stage', action='store', dest='stage', type=int, default=3
                     help='Stage (0 - Warm-Up, 1 - Qualifying, 2 - Race, 3 - Unknown)')
 parser.add_argument('--individual', action='store', dest='individual', type=str, default=None,
                     help='individual of each qtable')
-parser.add_argument('--episodes', action='store', dest='episode', type=bool, default=False,
-                    help='If it is running episodes or not')
+# parser.add_argument('--episodes', action='store', dest='episode', type=bool, default=False,
+#                     help='If it is running episodes or not')
 parser.add_argument('--numElites', action='store', dest='numElites', type=int, default=25,
                     help='Give the number of elites we want')
 
