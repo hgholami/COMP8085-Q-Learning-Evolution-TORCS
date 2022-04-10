@@ -27,6 +27,9 @@ def Stateindex(state):
     return int(output, 2)
 
 
+def Qtableaction(state,table,MaxQIndex,laptime):
+    Qtable_Action=ActionTable(MaxQIndex-1)
+    return Qtable_Action
 
 def Selectaction(state,table,MaxQIndex,laptime):
     eta=0.1-0.0000003*count()
