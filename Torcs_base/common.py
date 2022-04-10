@@ -1,6 +1,8 @@
 import heapq
 import random
 import pickle
+from xml.etree.ElementTree import tostring
+import pandas
 import os
 
 #this function passes in a Qtable dataframe and the mutation rate.
@@ -20,7 +22,7 @@ def mutate(qtable, mutation_rate):
             #print(actionValue)
             j+=1
     #print(qtable)
-    pass
+    return qtable
 
 def flipValue(value):
     return -value
@@ -74,6 +76,7 @@ def selection(driver, numElites):
 
 #eg: tableToCsv(table,"Qtable1")
 def tableToCsv(qtable, name):
+    #print(qtable)
     qtable.to_csv(path_or_buf= name+".csv",index=False)
     pass
 
@@ -96,22 +99,24 @@ if __name__ == '__main__':
 
     with open("elites.pkl", "rb") as handle:
         top = pickle.load(handle)
-    print(top)
-    # children = list()
+    #print(top)
+    children = list()
 
-    # if len(top) % 2 == 0: #even length
-    #     for i in range(0, len(top) - 1, 2):
-    #         o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-    #         children.append(o1, o2) #maybe work
-    # else: #odd length
-    #     for i in range(0, len(top) - 2, 2):
-    #         o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-    #         children.append(o1, o2) #maybe work
+    if len(top) % 2 == 0: #even length
+        for i in range(0, len(top) - 1, 2):
+            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+            children.append(o1, o2) #maybe work
+    else: #odd length
+        for i in range(0, len(top) - 2, 2):
+            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+            children.append(o1, o2) #maybe work
 
-    #     o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
-    #     children.append(o2) #maybe work
-
-    # for i in range(0, len(children) - 1):
-    #     children[i] = mutate(children[i], 0.01) #mutation rate will be an argument 
-    #     tableToCsv(children[i], "Qtable" + (i+1)) #relative path will be added soon
-    # pass
+        o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
+        children.append(o2) #maybe work
+    #print(children[0])
+    for i in range(0, len(children)):
+        #print(children[0])
+        children[i] = mutate(children[i], 0.01) #mutation rate will be an argument 
+        
+        tableToCsv(children[i], "./elites/qtable" + str(i)) #relative path will be added soon
+    pass

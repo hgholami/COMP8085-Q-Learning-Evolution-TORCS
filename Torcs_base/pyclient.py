@@ -40,7 +40,7 @@ parser.add_argument('--stage', action='store', dest='stage', type=int, default=3
 parser.add_argument('--individual', action='store', dest='individual', type=str, default=None,
                     help='individual of each qtable')
 parser.add_argument('--v', action='store_true', dest='view', help='View current run in GUI')
-parser.add_argument('--numElites', action='store', dest='numElites', type=int, default=25,
+parser.add_argument('--numElites', action='store', dest='numElites', type=int, default=1,
                     help='Give the number of elites we want')
 
 arguments = parser.parse_args()
