@@ -80,10 +80,6 @@ def tableToCsv(qtable, name):
     qtable.to_csv(path_or_buf= name+".csv",index=False)
     pass
 
-def evolution():
-    
-    pass
-
 if __name__ == '__main__':
 
     # t1 = pd.read_csv("./Qtable.csv")
@@ -105,18 +101,20 @@ if __name__ == '__main__':
     if len(top) % 2 == 0: #even length
         for i in range(0, len(top) - 1, 2):
             o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-            children.append(o1, o2) #maybe work
+            children.append(o1)
+            children.append(o2)
     else: #odd length
         for i in range(0, len(top) - 2, 2):
             o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-            children.append(o1, o2) #maybe work
+            children.append(o1)
+            children.append(o2)
 
         o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
-        children.append(o2) #maybe work
+        children.append(o2)
     #print(children[0])
     for i in range(0, len(children)):
         #print(children[0])
         children[i] = mutate(children[i], 0.01) #mutation rate will be an argument 
         
-        tableToCsv(children[i], "./elites/qtable" + str(i)) #relative path will be added soon
+        tableToCsv(children[i], "./elites/qtable" + str(i)) #write to elites folder
     pass
