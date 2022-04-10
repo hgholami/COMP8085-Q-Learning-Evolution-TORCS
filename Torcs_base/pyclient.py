@@ -69,10 +69,6 @@ curEpisode = 0
 verbose = False
 
 #d = driver.Driver(arguments.stage)
-f=open("./log.txt","w")
-f.write(arguments.individual)
-f.close()
-
 d = driver.Driver(arguments.stage, arguments.individual)
 
 while not shutdownClient:
