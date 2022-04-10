@@ -43,10 +43,10 @@ goto run_sym
 :run_sym
 echo Running experiment with individual %curr_ind% in generation %curr_gen%...
 set /a mod=%curr_ind% %% %individuals_per_elite%
-echo Using mod %mod%
+::echo Using mod %mod%
 set curr_elite=%elite_path%\qtable%mod%.csv
 echo Passing elite %curr_elite% to pyclient...
-start "ai_client" py pyclient.py --maxEpisodes=%ep_num% --numElites=%elite_size% --individual=%curr_elite%
+start "ai_client" py pyclient.py --maxEpisodes=%ep_num% --numElites=%elite_size% "--individual=%curr_elite%"
 ::start /wait "torcs_sim" /d %sim_path% call "%director_path%Torcs_Sim.bat" "%race_config%" %ep_num%
 
 cd %sim_path%
@@ -61,6 +61,18 @@ echo Individual %curr_ind% trained...
 
 set /a curr_ind+=1
 if not %curr_ind% gtr %pop_size% goto run_sym
+set /a curr_ind=1
 
+:: Generation is done
 echo Generation %curr_gen% done...
+start /wait "Genetics" py common.py
+:: --slice=%slice%
+del elites.pkl
+
+::restart loop for next gen
+set /a curr_gen+=1
+if not %curr_gen% gtr %gen_num% goto run_sym
+
+set /a curr_gen-=1
+echo %curr_gen% generations have run...
 exit /B 1
