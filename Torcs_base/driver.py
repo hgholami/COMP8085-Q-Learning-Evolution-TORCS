@@ -77,7 +77,7 @@ class Driver(object):
         
         return self.parser.stringify({'init': self.angles})
     
-    def drive(self, msg):
+    def drive(self, msg, view):
         start=time.time()
         DistanceNOW=self.state.getDistRaced()
         #print("DISTANCEEE="+str(DistanceNOW))
@@ -101,7 +101,11 @@ class Driver(object):
             Current_State=state
             
             Qmax_current=RewardFunction.FindQmaxIndex(Current_State,self.table)
-            speedselect, steerselect=ActionSelection.Selectaction(Current_State,self.table, Qmax_current,self.state.getCurLapTime()) #Action Selection
+            if view:
+                speedselect, steerselect=ActionSelection.Qtableaction(Current_State,self.table, Qmax_current,self.state.getCurLapTime()) #Action Selection for Qtable selection
+            else:
+                speedselect, steerselect=ActionSelection.Selectaction(Current_State,self.table, Qmax_current,self.state.getCurLapTime()) #Action Selection
+            
             Reward=0
             Reward_Next=0
        
@@ -123,7 +127,11 @@ class Driver(object):
             Next_State=state
             Qmax_Next=RewardFunction.FindQmaxIndex(Next_State,self.table)
             Reward_Next=RewardFunction.ComputeReward(speed,trackpos,angle,DistanceNOW)
-            speedselect, steerselect=ActionSelection.Selectaction(Next_State,self.table, Qmax_Next,self.state.getCurLapTime()) #Action Selection
+            if view:
+                speedselect, steerselect=ActionSelection.Qtableaction(Next_State,self.table, Qmax_Next,self.state.getCurLapTime()) #Action Selection for Qtable selection
+            else:
+                speedselect, steerselect=ActionSelection.Selectaction(Next_State,self.table, Qmax_Next,self.state.getCurLapTime()) #Action Selection
+
             if speedselect=='Hueristic':
                 SteerValue=self.steer()          #Storing stear value
                 self.gear()
@@ -138,8 +146,8 @@ class Driver(object):
             Next_Taken_ActionIndex=GetAccSteer.AccelSteer(AccelValue,SteerValue) #Takes the action taken in current state and encodes it
             
         
-        
-            Qtable.update(Current_State,Taken_ActionIndex,Qmax_Next,Next_State,Reward_Next,self.table)      #Writes the action in cur
+            if not view:
+                Qtable.update(Current_State,Taken_ActionIndex,Qmax_Next,Next_State,Reward_Next,self.table)      #Writes the action in cur
             
             #print("CURRENT STATE = "+str(Current_State) + "  NEXT STATE = " + str(Next_State))
             Current_State=Next_State

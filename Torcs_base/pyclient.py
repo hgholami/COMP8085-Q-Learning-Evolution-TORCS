@@ -39,8 +39,7 @@ parser.add_argument('--stage', action='store', dest='stage', type=int, default=3
                     help='Stage (0 - Warm-Up, 1 - Qualifying, 2 - Race, 3 - Unknown)')
 parser.add_argument('--individual', action='store', dest='individual', type=str, default=None,
                     help='individual of each qtable')
-# parser.add_argument('--episodes', action='store', dest='episode', type=bool, default=False,
-#                     help='If it is running episodes or not')
+parser.add_argument('--v', action='store_true', dest='view', help='View current run in GUI')
 parser.add_argument('--numElites', action='store', dest='numElites', type=int, default=25,
                     help='Give the number of elites we want')
 
@@ -73,7 +72,6 @@ verbose = False
 d = driver.Driver(arguments.stage, arguments.individual)
 
 while not shutdownClient:
-
     while True:
         print ('Sending id to server: ', arguments.id)
         buf = arguments.id + d.init()
@@ -142,7 +140,7 @@ while not shutdownClient:
         if currentStep != arguments.max_steps:
             #print("currentStep = ",currentStep)
             if buf != None:
-                buf = d.drive(buf)
+                buf = d.drive(buf, arguments.view)
         else:
             buf = '(meta 1)'
         
@@ -159,7 +157,8 @@ while not shutdownClient:
     curEpisode += 1
     print ("---------------------curEpisode-------------:", curEpisode)
     if curEpisode == arguments.max_episodes:
-        common.selection(d, arguments.numElites)
+        if not arguments.view:
+            common.selection(d, arguments.numElites)
         shutdownClient = True
         
 

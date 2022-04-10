@@ -1,5 +1,5 @@
 @echo off
-set ep_num=1
+set ep_num=10
 set race_config_name=quickrace_CG1_1Lap.xml
 set director_path=%~dp0
 set race_config=%director_path%%race_config_name%

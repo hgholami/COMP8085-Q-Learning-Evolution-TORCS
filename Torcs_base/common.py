@@ -96,22 +96,22 @@ if __name__ == '__main__':
 
     with open("elites.pkl", "rb") as handle:
         top = pickle.load(handle)
+    print(top)
+    # children = list()
 
-    children = list()
+    # if len(top) % 2 == 0: #even length
+    #     for i in range(0, len(top) - 1, 2):
+    #         o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+    #         children.append(o1, o2) #maybe work
+    # else: #odd length
+    #     for i in range(0, len(top) - 2, 2):
+    #         o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+    #         children.append(o1, o2) #maybe work
 
-    if len(top) % 2 == 0: #even length
-        for i in range(0, len(top) - 1, 2):
-            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-            children.append(o1, o2) #maybe work
-    else: #odd length
-        for i in range(0, len(top) - 2, 2):
-            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-            children.append(o1, o2) #maybe work
+    #     o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
+    #     children.append(o2) #maybe work
 
-        o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
-        children.append(o2) #maybe work
-
-    for i in range(0, len(children) - 1):
-        children[i] = mutate(children[i], 0.01) #mutation rate will be an argument 
-        tableToCsv(children[i], "Qtable" + (i+1)) #relative path will be added soon
-    pass
+    # for i in range(0, len(children) - 1):
+    #     children[i] = mutate(children[i], 0.01) #mutation rate will be an argument 
+    #     tableToCsv(children[i], "Qtable" + (i+1)) #relative path will be added soon
+    # pass
