@@ -2,9 +2,9 @@
 set /a ep_num=1
 set race_config_name=quickrace_CG1_1Lap.xml
 
-set /a pop_size=5
-set /a gen_num=2
-set /a elite_size=2
+set /a pop_size=19
+set /a gen_num=1
+set /a elite_size=4
 
 set /a curr_ind=1
 set /a curr_gen=1
@@ -38,17 +38,23 @@ endlocal
 
 set /a individuals_per_elite=%pop_size%/%elite_size%
 echo Number of individuals using an elite: %individuals_per_elite%
+set /a curr_elite_to_use=0
 goto run_sym
 
 :run_sym
 echo Running experiment with individual %curr_ind% in generation %curr_gen%...
 set /a mod=%curr_ind% %% %individuals_per_elite%
-::echo Using mod %mod%
-set curr_elite=%elite_path%\qtable%mod%.csv
+echo Using mod %mod%
+if %curr_elite_to_use% geq %elite_size% (
+    set /a curr_elite_to_use=0
+)
+set curr_elite=%elite_path%\qtable%curr_elite_to_use%.csv
 echo Passing elite %curr_elite% to pyclient...
 start "ai_client" py pyclient.py --maxEpisodes=%ep_num% --numElites=%elite_size% "--individual=%curr_elite%"
 ::start /wait "torcs_sim" /d %sim_path% call "%director_path%Torcs_Sim.bat" "%race_config%" %ep_num%
-
+if %mod% equ 0 (
+    set /a curr_elite_to_use+=1
+)
 cd %sim_path%
 setlocal
 call "%director_path%Torcs_Sim.bat" "%race_config%" %ep_num% "%director_path%" "%race_config_name%"
