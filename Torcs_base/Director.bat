@@ -2,9 +2,9 @@
 set /a ep_num=1
 set race_config_name=quickrace_CG1_1Lap.xml
 
-set /a pop_size=100
+set /a pop_size=5
 set /a gen_num=2
-set /a elite_size=25
+set /a elite_size=2
 
 set /a curr_ind=1
 set /a curr_gen=1
@@ -46,8 +46,7 @@ set /a mod=%curr_ind% %% %individuals_per_elite%
 echo Using mod %mod%
 set curr_elite=%elite_path%\qtable%mod%.csv
 echo Passing elite %curr_elite% to pyclient...
-start "ai_client" py pyclient.py --maxEpisodes=%ep_num%
-::--numElites=%elite_size% --individual=%curr_elite%
+start "ai_client" py pyclient.py --maxEpisodes=%ep_num% --numElites=%elite_size% --individual=%curr_elite%
 ::start /wait "torcs_sim" /d %sim_path% call "%director_path%Torcs_Sim.bat" "%race_config%" %ep_num%
 
 cd %sim_path%
