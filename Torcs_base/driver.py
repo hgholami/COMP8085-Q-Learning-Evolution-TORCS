@@ -28,9 +28,8 @@ class Driver(object):
     '''
     A driver object for the SCRC
     '''
-   
 
-    def __init__(self, stage, path):
+    def __init__(self, stage, path, table = None):
         '''Constructor'''
         self.WARM_UP = 0
         self.QUALIFYING = 1
@@ -52,17 +51,17 @@ class Driver(object):
 
         #Now if the argument is not present, read the default table, else use a table in the folder
         if path is None:
-            self.table=pandas.read_csv("./Qtable.csv")
+            if table is None:
+                self.table=pandas.read_csv("./Qtable.csv")
+            else:
+                self.table = table
         else: 
             self.table=pandas.read_csv(path)
         
         self.Accelerate=0
         self.Gearshift=0
-        self.steerval=0
-        
-        
-        
-    
+        self.steerval=0   
+
     def init(self):
         '''Return init string with rangefinder angles'''
         self.angles = [0 for x in range(19)]
