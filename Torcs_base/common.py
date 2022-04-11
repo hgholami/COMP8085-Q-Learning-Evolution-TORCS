@@ -62,18 +62,18 @@ def selection(driver, numElites):
             top = pickle.load(handle)
 
     if(len(top) >= numElites): #if list is more than specified number of elites
-        if top[0][0] < driver.state.getDistFromStart():
+        if top[0][0] < driver.state.getDistRaced():
             #current run is better than the lowest in the top, replace it
             heapq.heappop(top)
             # heapq.heappush([driver.state.getDistFromStart, driver.table])
-            heapq.heappush(top,(driver.state.distFromStart, driver.table))
+            heapq.heappush(top,(driver.state.getDistRaced(), driver.table))
 
             #Save in pickle
             with open("elites.pkl", "wb") as handle:
                 pickle.dump(top, handle)
         #current run is worse than lowest in the list
     else:
-        heapq.heappush(top,(driver.state.distFromStart, driver.table))
+        heapq.heappush(top,(driver.state.getDistRaced(), driver.table))
         
         #Save in pickle
         with open("elites.pkl", "wb") as handle:
@@ -103,6 +103,10 @@ if __name__ == '__main__':
         top = pickle.load(handle)
     print(top)
     children = list()
+
+    #uncomment the bottom 2 lines and comment after the 2 lines to extract original pickled table to csv
+    # for i in range(0, len(top)):
+    #     tableToCsv(top[i][1], "./elites/qtable" + str(i)) #write to elites folder
 
     if len(top) % 2 == 0: #even length
         for i in range(0, len(top) - 1, 2):

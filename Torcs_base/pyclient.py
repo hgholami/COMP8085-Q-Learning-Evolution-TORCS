@@ -141,6 +141,7 @@ while not shutdownClient:
             #print("currentStep = ",currentStep)
             if buf != None:
                 buf = d.drive(buf, arguments.view)
+                #print(d.state.getDistRaced())
         else:
             buf = '(meta 1)'
         
