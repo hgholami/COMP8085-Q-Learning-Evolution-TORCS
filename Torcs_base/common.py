@@ -14,8 +14,8 @@ def mutate(qtable, mutation_rate, mutation_percentage):
         j = 1
         for actionValue in qtable.iloc[state,1:]:
             #Remove bottom 2 lines if flipValue causes mess
-            if random.random() < mutation_rate:
-                actionValue = flipValue(actionValue)
+            # if random.random() < mutation_rate:
+            #     actionValue = flipValue(actionValue)
             if random.random() < mutation_rate:
                 actionValue = mutateValue(actionValue, mutation_percentage)
             qtable.iloc[state,j] = actionValue
