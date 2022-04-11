@@ -1,23 +1,23 @@
 import heapq
 import random
 import pickle
-from xml.etree.ElementTree import tostring
 import pandas
 import os
 
 #this function passes in a Qtable dataframe and the mutation rate.
 #mutation rate will be the chances of a cell being mutated.
 #eg: mutate(t, 0.05)
-def mutate(qtable, mutation_rate):
+def mutate(qtable, mutation_rate, mutation_percentage):
     #assuming we have a dataframe passed in
     for state in range(0, len(qtable)): #each state
         #each action value from the 15 action indexes for each state
         j = 1
         for actionValue in qtable.iloc[state,1:]:
+            #Remove bottom 2 lines if flipValue causes mess
             if random.random() < mutation_rate:
                 actionValue = flipValue(actionValue)
             if random.random() < mutation_rate:
-                actionValue = mutateValue(actionValue)
+                actionValue = mutateValue(actionValue, mutation_percentage)
             qtable.iloc[state,j] = actionValue
             #print(actionValue)
             j+=1
@@ -27,8 +27,14 @@ def mutate(qtable, mutation_rate):
 def flipValue(value):
     return -value
 
-def mutateValue(value):
-    value += random.uniform(-0.01,0.01)
+#percentage adjust the ratio of the value being choose within random generator
+#if a cell does not have a value, then add a small value in
+def mutateValue(value, percentage):
+    mutateRange = value * percentage
+    if value != 0:
+        value += random.uniform(-mutateRange,mutateRange)
+    else:
+        value += random.uniform(-0.01,0.01)
     return value
 
 #cut the tables around a half.
@@ -95,7 +101,7 @@ if __name__ == '__main__':
 
     with open("elites.pkl", "rb") as handle:
         top = pickle.load(handle)
-    #print(top)
+    print(top)
     children = list()
 
     if len(top) % 2 == 0: #even length
@@ -114,7 +120,9 @@ if __name__ == '__main__':
     #print(children[0])
     for i in range(0, len(children)):
         #print(children[0])
-        children[i] = mutate(children[i], 0.01) #mutation rate will be an argument 
+
+        #Arg 2 and 3 will be mutation rate and mutation percentage
+        children[i] = mutate(children[i], 0.01, 0.1) #mutation rate will be an argument 
         
         tableToCsv(children[i], "./elites/qtable" + str(i)) #write to elites folder
     pass

@@ -160,7 +160,7 @@ while not shutdownClient:
         if not arguments.view:
             common.selection(d, arguments.numElites)
         shutdownClient = True
-        
+    d = driver.Driver(arguments.stage, None, d.table)
 
 
 sock.close()
