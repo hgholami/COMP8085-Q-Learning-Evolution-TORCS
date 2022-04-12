@@ -108,25 +108,25 @@ if __name__ == '__main__':
     # for i in range(0, len(top)):
     #     tableToCsv(top[i][1], "./elites/qtable" + str(i)) #write to elites folder
 
-    if len(top) % 2 == 0: #even length
-        for i in range(0, len(top) - 1, 2):
-            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-            children.append(o1)
-            children.append(o2)
-    else: #odd length
-        for i in range(0, len(top) - 2, 2):
-            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
-            children.append(o1)
-            children.append(o2)
+    # if len(top) % 2 == 0: #even length
+    #     for i in range(0, len(top) - 1, 2):
+    #         o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+    #         children.append(o1)
+    #         children.append(o2)
+    # else: #odd length
+    #     for i in range(0, len(top) - 2, 2):
+    #         o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+    #         children.append(o1)
+    #         children.append(o2)
 
-        o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
-        children.append(o2)
+    #     o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
+    #     children.append(o2)
     #print(children[0])
     for i in range(0, len(children)):
         #print(children[0])
 
         #Arg 2 and 3 will be mutation rate and mutation percentage
-        children[i] = mutate(children[i], 0.01, 0.1) #mutation rate will be an argument 
+        # children[i] = mutate(children[i], 0.01, 0.1) #mutation rate will be an argument 
         
         tableToCsv(children[i], "./elites/qtable" + str(i)) #write to elites folder
     pass
