@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Ignore all csv files
+*.csv
+
+# Ignore all pickles
+*.pkl
+
 # C extensions
 *.so
 
@@ -127,3 +133,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ignore qtable and episode files
