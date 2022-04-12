@@ -61,19 +61,22 @@ def selection(driver, numElites):
         with open("elites.pkl", "rb") as handle:
             top = pickle.load(handle)
 
+    #This experiment try to get best distance per second
+    distancePerSecond = driver.state.getDistRaced() / driver.state.getCurLapTime()
+    
     if(len(top) >= numElites): #if list is more than specified number of elites
-        if top[0][0] < driver.state.getDistRaced():
+        if top[0][0] < distancePerSecond:
             #current run is better than the lowest in the top, replace it
             heapq.heappop(top)
             # heapq.heappush([driver.state.getDistFromStart, driver.table])
-            heapq.heappush(top,(driver.state.getDistRaced(), driver.table))
+            heapq.heappush(top,(distancePerSecond, driver.table))
 
             #Save in pickle
             with open("elites.pkl", "wb") as handle:
                 pickle.dump(top, handle)
         #current run is worse than lowest in the list
     else:
-        heapq.heappush(top,(driver.state.getDistRaced(), driver.table))
+        heapq.heappush(top,(distancePerSecond, driver.table))
         
         #Save in pickle
         with open("elites.pkl", "wb") as handle:
@@ -109,12 +112,12 @@ if __name__ == '__main__':
     #     tableToCsv(top[i][1], "./elites/qtable" + str(i)) #write to elites folder
 
     if len(top) % 2 == 0: #even length
-        for i in range(0, len(top) - 1, 2):
+        for i in range(0, len(top), 2):
             o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
             children.append(o1)
             children.append(o2)
     else: #odd length
-        for i in range(0, len(top) - 2, 2):
+        for i in range(0, len(top) - 1, 2):
             o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
             children.append(o1)
             children.append(o2)
