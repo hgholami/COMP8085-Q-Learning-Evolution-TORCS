@@ -3,7 +3,7 @@ set /a ep_num=10
 set race_config_name=quickrace_CG1_1Lap.xml
 
 set /a pop_size=2
-set /a gen_num=100
+set /a gen_num=50
 set /a elite_size=2
 
 set /a curr_ind=1
