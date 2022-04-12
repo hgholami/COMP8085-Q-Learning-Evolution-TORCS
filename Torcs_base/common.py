@@ -101,27 +101,33 @@ if __name__ == '__main__':
 
     with open("elites.pkl", "rb") as handle:
         top = pickle.load(handle)
-    print(top)
+    
+    #sort the list of tuples from the largest to smallest
+    sortedTop = sorted(top, reverse=True)
+    print(sortedTop)
     children = list()
+
+    #print(len(sortedTop))
 
     #uncomment the bottom 2 lines and comment after the 2 lines to extract original pickled table to csv
     # for i in range(0, len(top)):
     #     tableToCsv(top[i][1], "./elites/qtable" + str(i)) #write to elites folder
 
-    if len(top) % 2 == 0: #even length
-        for i in range(0, len(top) - 1, 2):
-            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+    #crossover now will grab the largest and the lowest and move to the center
+    #the children will be 2 average best, and so on...
+    if len(sortedTop) % 2 == 0: #even length
+        for i in range(0, int(len(sortedTop)/2)):
+            o1, o2 = crossover(sortedTop[i][1],sortedTop[len(sortedTop) - 1 - i][1],0.5)
             children.append(o1)
             children.append(o2)
     else: #odd length
-        for i in range(0, len(top) - 2, 2):
-            o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
+        for i in range(0, int((len(sortedTop)-1)/2)):
+            o1, o2 = crossover(sortedTop[i][1],sortedTop[len(sortedTop) - 1 - i][1],0.5)
             children.append(o1)
             children.append(o2)
 
-        o1, o2 = crossover(top[0][1],top[len(top)-1][1],0.5)
-        children.append(o2)
-    #print(children[0])
+        children.append(sortedTop[int((len(sortedTop)-1)/2)][1])
+    #print(children[2])
     for i in range(0, len(children)):
         #print(children[0])
 

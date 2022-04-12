@@ -1,10 +1,10 @@
 @echo off
-set /a ep_num=5
+set /a ep_num=100
 set race_config_name=quickrace_CG1_1Lap.xml
 
-set /a pop_size=4
+set /a pop_size=5
 set /a gen_num=2
-set /a elite_size=3
+set /a elite_size=4
 
 set /a curr_ind=1
 set /a curr_gen=1
