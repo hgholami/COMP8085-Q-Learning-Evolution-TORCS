@@ -109,12 +109,12 @@ if __name__ == '__main__':
     #     tableToCsv(top[i][1], "./elites/qtable" + str(i)) #write to elites folder
 
     if len(top) % 2 == 0: #even length
-        for i in range(0, len(top) - 1, 2):
+        for i in range(0, len(top), 2):
             o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
             children.append(o1)
             children.append(o2)
     else: #odd length
-        for i in range(0, len(top) - 2, 2):
+        for i in range(0, len(top) - 1, 2):
             o1, o2 = crossover(top[i][1],top[i+1][1],0.5)
             children.append(o1)
             children.append(o2)
